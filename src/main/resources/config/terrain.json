@@ -1,0 +1,47 @@
+{
+  "terrains": [
+    {
+      "id": "plain",
+      "code": 1,
+      "name": "Plain",
+      "movementCosts": {
+        "GROUND": 1,
+        "FLYING": 1
+      },
+      "sightCost": 1,
+      "resourceId": "NONE"
+    },
+    {
+      "id": "forest",
+      "code": 2,
+      "name": "Forest",
+      "movementCosts": {
+        "GROUND": 2,
+        "FLYING": 1
+      },
+      "sightCost": 2,
+      "resourceId": "WOOD"
+    },
+    {
+      "id": "mine",
+      "code": 3,
+      "name": "Ore Vein",
+      "movementCosts": {
+        "GROUND": 3,
+        "FLYING": 1
+      },
+      "sightCost": 1,
+      "resourceId": "ORE"
+    },
+    {
+      "id": "water",
+      "code": 4,
+      "name": "Water",
+      "movementCosts": {
+        "FLYING": 1
+      },
+      "sightCost": 1,
+      "resourceId": "NONE"
+    }
+  ]
+}

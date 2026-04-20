@@ -1,0 +1,23 @@
+{
+  "templates": [
+    {
+      "id": "starter-map",
+      "name": "Starter Frontier",
+      "width": 7,
+      "height": 7,
+      "terrainRows": [
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 2, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 3, 3, 1],
+        [1, 1, 1, 1, 1, 1, 1],
+        [4, 4, 1, 1, 1, 1, 1]
+      ],
+      "buildings": [
+        { "instanceId": "watchtower-1", "buildingId": "watchtower", "hexX": 2, "hexY": 0 },
+        { "instanceId": "city-1", "buildingId": "city", "hexX": 4, "hexY": 4 }
+      ]
+    }
+  ]
+}

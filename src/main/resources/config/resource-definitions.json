@@ -1,0 +1,25 @@
+{
+  "resources": [
+    {
+      "id": "NONE",
+      "name": "No Resource",
+      "category": "EMPTY",
+      "gatherPerHour": 0,
+      "capacity": 0
+    },
+    {
+      "id": "WOOD",
+      "name": "Forest",
+      "category": "GATHERABLE",
+      "gatherPerHour": 180,
+      "capacity": 5400
+    },
+    {
+      "id": "ORE",
+      "name": "Ore Field",
+      "category": "GATHERABLE",
+      "gatherPerHour": 120,
+      "capacity": 3600
+    }
+  ]
+}

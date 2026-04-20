@@ -1,0 +1,33 @@
+{
+  "buildings": [
+    {
+      "id": "city",
+      "code": 1001,
+      "name": "Starter City",
+      "type": "CITY",
+      "category": "SETTLEMENT",
+      "blocksMovement": true,
+      "durability": 10000,
+      "visionBonus": 2,
+      "footprint": [
+        { "hexX": 0, "hexY": 0 },
+        { "hexX": 1, "hexY": 0 },
+        { "hexX": 0, "hexY": 1 },
+        { "hexX": 1, "hexY": 1 }
+      ]
+    },
+    {
+      "id": "watchtower",
+      "code": 2001,
+      "name": "Frontier Watchtower",
+      "type": "WATCHTOWER",
+      "category": "OUTPOST",
+      "blocksMovement": true,
+      "durability": 2500,
+      "visionBonus": 3,
+      "footprint": [
+        { "hexX": 0, "hexY": 0 }
+      ]
+    }
+  ]
+}
