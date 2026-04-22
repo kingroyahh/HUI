@@ -136,5 +136,6 @@ VisionDelta movedDelta = visionService.updateVision(gameMap, scout);
 
 | 版本 | 变更内容 |
 |------|----------|
-| 当前 | 升级 Java 运行时至 25 LTS；新增地图 HTML 预览（`MapHtmlRenderer`、`MapPreviewExporter`、`MapPreviewServer`）；升级 `maven-compiler-plugin` 至 3.13.0，`maven-surefire-plugin` 至 3.5.0 |
-| 初始 | 地图系统核心实现：配置加载、A* 寻路、建筑占格、增量视野 |
+| 当前 | **地图功能迭代**：新增 FOOD（粮食矿/farmland）和 STONE（石头矿/quarry）地形与资源类型；新增建筑归属（`ownerId`）字段，同归属方单位可穿越己方建筑，`AStarPathFinder` / `PathFinder` 新增归属感知寻路重载；新增 `GameMap.removeBuilding()` 与 `isResourceCovered()` 支持建筑覆盖/恢复资源；`starter-map` 补充粮食地和石矿格子；新增 3 项回归测试，全量 6/6 通过；新增 `GameSession` + 改造 `MapPreviewServer` 为可交互游戏入口（实体移动、视野高亮、路径预览） |
+| v1.1 | 升级 Java 运行时至 25 LTS；新增地图 HTML 预览（`MapHtmlRenderer`、`MapPreviewExporter`、`MapPreviewServer`）；升级 `maven-compiler-plugin` 至 3.13.0，`maven-surefire-plugin` 至 3.5.0 |
+| v1.0 | 地图系统核心实现：配置加载、A* 寻路、建筑占格、增量视野 |
