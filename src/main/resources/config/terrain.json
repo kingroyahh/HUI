@@ -42,6 +42,28 @@
       },
       "sightCost": 1,
       "resourceId": "NONE"
+    },
+    {
+      "id": "farmland",
+      "code": 5,
+      "name": "Farmland",
+      "movementCosts": {
+        "GROUND": 1,
+        "FLYING": 1
+      },
+      "sightCost": 1,
+      "resourceId": "FOOD"
+    },
+    {
+      "id": "quarry",
+      "code": 6,
+      "name": "Stone Quarry",
+      "movementCosts": {
+        "GROUND": 3,
+        "FLYING": 1
+      },
+      "sightCost": 1,
+      "resourceId": "STONE"
     }
   ]
 }

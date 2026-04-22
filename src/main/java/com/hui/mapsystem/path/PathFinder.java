@@ -39,4 +39,22 @@ public final class PathFinder {
         }
         return AStarPathFinder.findPath(boundMap, start, end, moveType);
     }
+
+    /**
+     * 在已绑定地图上执行归属感知寻路。
+     * 归属方与建筑一致时，地面单位可穿越该建筑所在格子。
+     *
+     * @param start 起点坐标。
+     * @param end 终点坐标。
+     * @param moveType 移动类型。
+     * @param actorOwnerId 行动方归属 id。
+     * @return 路径结果；不存在路径时返回空列表。
+     * @throws IllegalStateException 当调用前尚未绑定地图时抛出。
+     */
+    public static List<SquareCoordinate> findPath(SquareCoordinate start, SquareCoordinate end, MoveType moveType, String actorOwnerId) {
+        if (boundMap == null) {
+            throw new IllegalStateException("PathFinder has not been bound to a GameMap");
+        }
+        return AStarPathFinder.findPath(boundMap, start, end, moveType, actorOwnerId);
+    }
 }

@@ -20,6 +20,20 @@
       "category": "GATHERABLE",
       "gatherPerHour": 120,
       "capacity": 3600
+    },
+    {
+      "id": "FOOD",
+      "name": "Farmland",
+      "category": "GATHERABLE",
+      "gatherPerHour": 150,
+      "capacity": 4500
+    },
+    {
+      "id": "STONE",
+      "name": "Stone Quarry",
+      "category": "GATHERABLE",
+      "gatherPerHour": 90,
+      "capacity": 2700
     }
   ]
 }

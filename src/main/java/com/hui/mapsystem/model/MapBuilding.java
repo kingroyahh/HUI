@@ -13,6 +13,18 @@ public final class MapBuilding {
     private final String instanceId;
     private final BuildingConfig buildingConfig;
     private final SquareCoordinate origin;
+    private final String ownerId;
+
+    /**
+     * 创建一个地图建筑实例（无归属方）。
+     *
+     * @param instanceId 建筑实例 id。
+     * @param buildingConfig 建筑原型配置。
+     * @param origin 建筑原点坐标。
+     */
+    public MapBuilding(String instanceId, BuildingConfig buildingConfig, SquareCoordinate origin) {
+        this(instanceId, buildingConfig, origin, null);
+    }
 
     /**
      * 创建一个地图建筑实例。
@@ -20,11 +32,13 @@ public final class MapBuilding {
      * @param instanceId 建筑实例 id。
      * @param buildingConfig 建筑原型配置。
      * @param origin 建筑原点坐标。
+     * @param ownerId 归属玩家/阵营 id；中立建筑传 null。
      */
-    public MapBuilding(String instanceId, BuildingConfig buildingConfig, SquareCoordinate origin) {
+    public MapBuilding(String instanceId, BuildingConfig buildingConfig, SquareCoordinate origin, String ownerId) {
         this.instanceId = instanceId;
         this.buildingConfig = buildingConfig;
         this.origin = origin;
+        this.ownerId = ownerId;
     }
 
     /**
@@ -52,6 +66,15 @@ public final class MapBuilding {
      */
     public SquareCoordinate getOrigin() {
         return origin;
+    }
+
+    /**
+     * 返回建筑归属方 id。
+     *
+     * @return 归属玩家/阵营 id；中立建筑返回 null。
+     */
+    public String getOwnerId() {
+        return ownerId;
     }
 
     /**

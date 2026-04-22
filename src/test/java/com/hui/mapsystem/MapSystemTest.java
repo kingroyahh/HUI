@@ -87,4 +87,53 @@ class MapSystemTest {
             new SquareCoordinate(1, 2)
         ), movedDelta.exitedCells());
     }
+
+    @Test
+    void shouldExposeAllFourResourceTypes() {
+        assertEquals("WOOD", gameMap.getCell(1, 1).getResourceType());
+        assertEquals("ORE", gameMap.getCell(4, 4).getResourceType());
+        assertEquals("FOOD", gameMap.getCell(0, 3).getResourceType());
+        assertEquals("STONE", gameMap.getCell(3, 5).getResourceType());
+        assertEquals("Farmland", ConfigManager.getInstance().getResource("FOOD").getName());
+        assertEquals("Stone Quarry", ConfigManager.getInstance().getResource("STONE").getName());
+    }
+
+    @Test
+    void shouldCoverAndUncoverResourcesWithBuildings() {
+        // city-1 at (4,4): 2×2 footprint → (4,4) and (5,4) are mine (ORE) → covered
+        assertTrue(gameMap.isResourceCovered(new SquareCoordinate(4, 4)));
+        assertTrue(gameMap.isResourceCovered(new SquareCoordinate(5, 4)));
+        // (4,5) and (5,5) are plain (NONE) → not covered
+        assertFalse(gameMap.isResourceCovered(new SquareCoordinate(4, 5)));
+
+        // Remove building → resource re-exposed, cell walkable again
+        MapBuilding removed = gameMap.removeBuilding("city-1");
+        assertNotNull(removed);
+        assertFalse(gameMap.isResourceCovered(new SquareCoordinate(4, 4)));
+        assertTrue(gameMap.isWalkable(new SquareCoordinate(4, 4), MoveType.GROUND));
+    }
+
+    @Test
+    void shouldAllowOwnerToPathfindThroughOwnBuilding() {
+        // Place watchtower owned by player-1 at (3,3)
+        gameMap.placeBuilding("guard-post", "watchtower", new SquareCoordinate(3, 3), "player-1");
+
+        // No owner context → building blocks, path must go around
+        List<SquareCoordinate> blockedPath = PathFinder.findPath(
+            new SquareCoordinate(2, 3), new SquareCoordinate(4, 3), MoveType.GROUND);
+        assertFalse(blockedPath.isEmpty());
+        assertFalse(blockedPath.contains(new SquareCoordinate(3, 3)));
+
+        // Matching owner → can pass through own building (direct 3-cell path)
+        List<SquareCoordinate> ownerPath = PathFinder.findPath(
+            new SquareCoordinate(2, 3), new SquareCoordinate(4, 3), MoveType.GROUND, "player-1");
+        assertEquals(3, ownerPath.size());
+        assertTrue(ownerPath.contains(new SquareCoordinate(3, 3)));
+
+        // Different owner → still blocked
+        List<SquareCoordinate> enemyPath = PathFinder.findPath(
+            new SquareCoordinate(2, 3), new SquareCoordinate(4, 3), MoveType.GROUND, "player-2");
+        assertFalse(enemyPath.isEmpty());
+        assertFalse(enemyPath.contains(new SquareCoordinate(3, 3)));
+    }
 }

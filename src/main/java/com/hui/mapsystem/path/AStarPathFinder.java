@@ -66,6 +66,57 @@ public final class AStarPathFinder {
         return List.of();
     }
 
+    /**
+     * 在指定地图上执行归属感知的 A* 寻路。
+     * 归属方与建筑一致时，地面单位可穿越该建筑所在格子。
+     *
+     * @param gameMap 地图对象。
+     * @param start 起点坐标。
+     * @param end 终点坐标。
+     * @param moveType 移动类型。
+     * @param actorOwnerId 行动方归属 id；传 null 与 {@link #findPath(GameMap, SquareCoordinate, SquareCoordinate, MoveType)} 等价。
+     * @return 从起点到终点的路径；不存在路径时返回空列表。
+     */
+    public static List<SquareCoordinate> findPath(GameMap gameMap,
+                                                  SquareCoordinate start,
+                                                  SquareCoordinate end,
+                                                  MoveType moveType,
+                                                  String actorOwnerId) {
+        if (!gameMap.isWalkable(start, moveType, actorOwnerId) || !gameMap.isWalkable(end, moveType, actorOwnerId)) {
+            return List.of();
+        }
+        if (start.equals(end)) {
+            return List.of(start);
+        }
+
+        PriorityQueue<PathNode> openSet = new PriorityQueue<>(Comparator.comparingInt(PathNode::fScore));
+        Map<SquareCoordinate, SquareCoordinate> cameFrom = new HashMap<>();
+        Map<SquareCoordinate, Integer> gScore = new HashMap<>();
+        gScore.put(start, 0);
+        openSet.offer(new PathNode(start, heuristic(start, end)));
+
+        while (!openSet.isEmpty()) {
+            PathNode currentNode = openSet.poll();
+            SquareCoordinate current = currentNode.coordinate();
+            if (current.equals(end)) {
+                return buildPath(cameFrom, current);
+            }
+
+            int currentCost = gScore.getOrDefault(current, Integer.MAX_VALUE);
+            for (SquareCoordinate neighbor : gameMap.getNeighbors(current, moveType, actorOwnerId)) {
+                int tentativeCost = currentCost + gameMap.getTraversalCost(neighbor, moveType);
+                if (tentativeCost >= gScore.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                    continue;
+                }
+                cameFrom.put(neighbor, current);
+                gScore.put(neighbor, tentativeCost);
+                openSet.offer(new PathNode(neighbor, tentativeCost + heuristic(neighbor, end)));
+            }
+        }
+
+        return List.of();
+    }
+
     private static List<SquareCoordinate> buildPath(Map<SquareCoordinate, SquareCoordinate> cameFrom,
                                                     SquareCoordinate end) {
         List<SquareCoordinate> path = new ArrayList<>();
