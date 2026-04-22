@@ -1,6 +1,6 @@
 # HUI
 
-基于 Java 17 的地图系统示例工程，当前实现了配置驱动的地图构建、A* 寻路、建筑占格、资源地形绑定以及增量视野计算。
+基于 Java 25 LTS 的地图系统示例工程，当前实现了配置驱动的地图构建、A* 寻路、建筑占格、资源地形绑定、增量视野计算以及地图 HTML 预览。
 
 ## 功能概览
 
@@ -9,11 +9,13 @@
 - 通过 `PathFinder.findPath(...)` 执行地面或飞行单位寻路。
 - 通过 `IncrementalVisionService` 计算单位移动后的视野增量。
 - 通过 `MapGridPool.obtain()` 复用地图格子对象，避免在地图构建循环中频繁创建对象。
+- 通过 `MapPreviewExporter` 导出地图 HTML 可视化文件。
+- 通过 `MapPreviewServer` 启动本地 HTTP 服务实时预览地图。
 
 ## 环境要求
 
-- JDK 17 或更高版本
-- Maven 3.9 或兼容版本
+- JDK 25 LTS 或更高版本
+- Maven 3.9 或兼容版本（推荐 Maven 4.x）
 
 ## 项目结构
 
@@ -21,6 +23,7 @@
 - `src/main/java/com/hui/mapsystem/model/`：地图、格子、建筑、实体与组件
 - `src/main/java/com/hui/mapsystem/path/`：A* 寻路实现与调用入口
 - `src/main/java/com/hui/mapsystem/vision/`：增量视野计算
+- `src/main/java/com/hui/mapsystem/view/`：地图 HTML 渲染、预览导出与本地预览服务
 - `src/main/resources/config/`：地图系统配置文件
 - `src/test/java/com/hui/mapsystem/`：聚焦测试用例
 - `docs/excel-config-guide.md`：中文配置说明文档
@@ -47,7 +50,25 @@ mvn test
 mvn test -Dtest=MapSystemTest
 ```
 
-### 3. 打包
+### 3. 导出地图 HTML 预览
+
+将指定地图模板渲染为静态 HTML 文件，输出到 `target/map-preview/<templateId>.html`：
+
+```bash
+mvn exec:java -Dexec.mainClass="com.hui.mapsystem.view.MapPreviewExporter" -Dexec.args="starter-map"
+```
+
+### 4. 启动地图预览服务
+
+启动本地 HTTP 服务，在浏览器中实时预览地图（默认端口 8765）：
+
+```bash
+mvn exec:java -Dexec.mainClass="com.hui.mapsystem.view.MapPreviewServer" -Dexec.args="starter-map 8765"
+```
+
+启动后访问：`http://127.0.0.1:8765/`
+
+### 5. 打包
 
 ```bash
 mvn package
@@ -55,11 +76,12 @@ mvn package
 
 ## 当前使用方式
 
-这个仓库当前是地图系统模块示例，还没有提供独立的启动类或服务端入口。主要使用方式是：
+这个仓库当前是地图系统模块示例，主要使用方式是：
 
 1. 通过测试验证功能行为。
 2. 在业务代码中调用现有 API 集成地图能力。
 3. 通过修改 `src/main/resources/config/` 下的配置文件调整地图内容。
+4. 通过 `MapPreviewExporter` 或 `MapPreviewServer` 可视化调试地图布局。
 
 下面是典型调用路径：
 
@@ -106,6 +128,13 @@ VisionDelta movedDelta = visionService.updateVision(gameMap, scout);
 
 ## 后续扩展建议
 
-- 增加独立的示例启动入口，方便手工调试地图行为
 - 将视野遮挡规则与 `sightCost` 真正联动
 - 在模板加载阶段增加更严格的配置校验与错误提示
+- 升级 Maven 至 4.x（当前使用 3.9，Java 25 推荐 4.0+）
+
+## 版本历史
+
+| 版本 | 变更内容 |
+|------|----------|
+| 当前 | 升级 Java 运行时至 25 LTS；新增地图 HTML 预览（`MapHtmlRenderer`、`MapPreviewExporter`、`MapPreviewServer`）；升级 `maven-compiler-plugin` 至 3.13.0，`maven-surefire-plugin` 至 3.5.0 |
+| 初始 | 地图系统核心实现：配置加载、A* 寻路、建筑占格、增量视野 |
